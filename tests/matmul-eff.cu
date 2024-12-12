@@ -40,6 +40,7 @@ __device__ __forceinline__ void loadSmemA(half *smem, half *A, int M, int K,
         "l"(&A[(by * 128 + logic_row) * K + (ko * KI + logic_col)]), "n"(16),
         "r"(16));
   }
+}
 
   __device__ __forceinline__ void predLoadSmemA(half * smem, half * A, int M, int K,
                                                 int ko, bool pred_guard)
