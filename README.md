@@ -1,3 +1,8 @@
+# Abstract 
+Matrix multiplication (matmul) is one of the most fundamental operations in modern machine learning (ML) and deep learning (DL) frameworks. Matmul underpins the computational workload in key operations like fully connected layers, convolutional layers, and attention mechanisms, which are integral to the training and inference of neural networks. As the complexity of ML and DL models grows, so does the demand for highly efficient matrix multiplication implementations to support scalable, high-performance computing. In this project, we are aiming to manually implement cuBLAS-comparable optimized matmul kernel on A100 GPUs with basic and advanced techniques such as tiling and tensor cores. Our experiments show that our customized kernel can achieve 70%-90% of cuBLAS performance and significantly outperform PyTorch implementation, and our kernel can be easily integrated into Needle framework.
+
+![relative_latency_matmul](https://github.com/user-attachments/assets/ec94e531-5a53-401a-9cc4-390454479b6f)
+
 # Running the Code
 
 ## Running Needle with the original CUDA code
@@ -6,7 +11,7 @@
    in `matmul` function to false
 2. Run `make`
 
-## Test optimized matmul kernel (eff)
+## Test our optimized matmul kernel (eff)
 
 ```
 cd tests
