@@ -1,10 +1,12 @@
 #include <cuda_fp16.h>
 #include <mma.h>
 
-#include "matmul_kernels.h" 
+#include "matmul_kernels.h"
 
-namespace needle {
-namespace cuda {
+namespace needle
+{
+  namespace cuda
+  {
     const int MI = 128;
     const int NI = 128;
     const int KI = 32;
@@ -41,18 +43,6 @@ namespace cuda {
                 smem_ptr),
             "l"(&A[(by * 128 + logic_row) * K + (ko * KI + logic_col)]), "n"(16),
             "r"(16));
-
-        // uint32_t smem_ptr;
-
-        // asm("{ .reg .u64 smem_ptr; cvta.to.shared.u64 smem_ptr, %1; cvt.u32.u64 "
-        //     "%0, smem_ptr; }\n"
-        //     : "=r"(smem_ptr)
-        //     : "l"(ptr));
-
-        // asm volatile("cp.async.cg.shared.global [%0], [%1], %2;\n"
-        // ::"r"(smem_ptr),
-        //              "l"(&A[(by * 128 + logic_row) * K + (ko * KI + logic_col)]),
-        //              "n"(16));
       }
     }
 
@@ -188,11 +178,6 @@ namespace cuda {
         row = row / 2;
         col = col ^ (((row & 3) << 3));
         void *ptr = (void *)(smem + row * 64 + col);
-        // uint32_t smem_ptr;
-        // asm("{ .reg .u64 smem_ptr; cvta.to.shared.u64 smem_ptr, %1; cvt.u32.u64"
-        //     "%0, smem_ptr; }\n"
-        //     : "=r"(smem_ptr)
-        //     : "l"(ptr));
         uint32_t smem_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
         asm volatile(
             "ldmatrix.sync.aligned.x4.m8n8.shared.b16 {%0, %1, %2, %3}, [%4];\n"
@@ -220,11 +205,6 @@ namespace cuda {
         row = row / 2;
         col = col ^ (((row & 3) << 3));
         void *ptr = (void *)(smem + row * 64 + col);
-        // uint32_t smem_ptr;
-        // asm("{ .reg .u64 smem_ptr; cvta.to.shared.u64 smem_ptr, %1; cvt.u32.u64 "
-        //     "%0, smem_ptr; }\n"
-        //     : "=r"(smem_ptr)
-        //     : "l"(ptr));
         uint32_t smem_ptr = static_cast<uint32_t>(__cvta_generic_to_shared(ptr));
         asm volatile(
             "ldmatrix.sync.aligned.x4.m8n8.shared.b16 {%0, %1, %2, %3}, [%4];\n"
@@ -412,8 +392,5 @@ namespace cuda {
       }
     }
 
-
-
-
-} // namespace cuda
+  } // namespace cuda
 } // namespace needle
